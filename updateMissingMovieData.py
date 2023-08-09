@@ -7,14 +7,12 @@ from databaseUtils import connect
 connection = connect()
 
 cursor = connection.cursor()
-cursor.execute("SELECT imdbUrl FROM movies WHERE omdbData IS NULL AND rankTheyShoot IS NOT NULL LIMIT 1000")
+cursor.execute("SELECT imdbUrl FROM movies WHERE omdbData IS NULL LIMIT 1000")
 
 imdbUrls = [row[0] for row in cursor.fetchall()]
 
 for imdbUrl in imdbUrls:
-# Extract IMDb IDs from IMDb URLs
     imdbId = urlparse(imdbUrl).path.split('/')[-2]
-
     omdbData = getMoviData(imdbId)
 
     if omdbData:
