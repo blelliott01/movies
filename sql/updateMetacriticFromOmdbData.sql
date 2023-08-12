@@ -1,5 +1,5 @@
 UPDATE movies
-SET ratingMetacritic = 
+SET rating = 
   CASE
     WHEN json_extract(value, '$.Source') = 'Metacritic' THEN CAST(REPLACE(json_extract(value, '$.Value'), '/100', '') AS INTEGER)
     WHEN json_extract(value, '$.Source') = 'Internet Movie Database' THEN CAST(REPLACE(json_extract(value, '$.Value'), '/10', '') AS INTEGER) * 10

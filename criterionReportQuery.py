@@ -1,9 +1,10 @@
 def getQuery():
     return """
     SELECT 
-        title || ' (' || year || ')' AS title
-        , criterion || '-' || shelf AS location
-        , imdbUrl
+        title,
+        year
+        criterion,
+        shelf
     FROM movies
     WHERE criterion IS NOT NULL AND owned = 'yes'
     ORDER BY 

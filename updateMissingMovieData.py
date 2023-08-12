@@ -7,7 +7,7 @@ from databaseUtils import connect
 connection = connect()
 
 cursor = connection.cursor()
-cursor.execute("SELECT imdbUrl FROM movies WHERE omdbData IS NULL LIMIT 600")
+cursor.execute("SELECT imdbUrl FROM movies WHERE owned = 'yes' AND omdbData IS NULL LIMIT 600")
 
 imdbUrls = [row[0] for row in cursor.fetchall()]
 
