@@ -1,0 +1,1 @@
+select * from _criterion_4k where title not in (SELECT title from movies) and year <> ''
