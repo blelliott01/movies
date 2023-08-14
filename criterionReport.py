@@ -76,7 +76,7 @@ for row in data:
         prefix = prefix + '4K '
 
     if prefix != '' and row[Cols.TSPDT.value] is not None:
-        title = f"<b>{prefix}{row[Cols.TITLE.value]}</b>\n"
+        title = f"{prefix}{row[Cols.TITLE.value]}\n"
     elif prefix != '':
         title = f"{prefix}{row[Cols.TITLE.value]}\n"
     else:
@@ -99,13 +99,30 @@ for row in data:
     if year is None and director is None and time is None:
         info = ''
     
-    ratingMC = f"MC: {row[Cols.METACRITIC.value]}% " if row[Cols.METACRITIC.value] is not None else ''
-    ratingTS = f"TS: {row[Cols.TSPDT.value]} " if row[Cols.TSPDT.value] is not None else ''
+    if row[Cols.METACRITIC.value] is not None:
+        rating = f"{row[Cols.METACRITIC.value]}%"
+    elif row[Cols.IMDB.value] is not None:
+        rating = f"<i>{row[Cols.IMDB.value]}%</i>"
+    else:
+        rating = ""
 
-    formatted_row = [
-        Paragraph(f"{title}{info}{ratingMC}{ratingTS}", styles['Small']),
-        Paragraph(f"{location}", styles['RightAligned']) 
-    ]
+    theyShoot = f"{row[Cols.TSPDT.value]}" if row[Cols.TSPDT.value] is not None else ''
+
+    if prefix != '' and row[Cols.TSPDT.value] is not None:
+        formatted_row = [
+            Paragraph(f"<b>{title}{info}</b>", styles['Small']),
+            Paragraph(f"<b>{theyShoot}</b>", styles['RightAligned']),
+            Paragraph(f"<b>{rating}</b>", styles['RightAligned']),
+            Paragraph(f"<b>{location}</b>", styles['RightAligned']) 
+        ]
+    else:
+        formatted_row = [
+            Paragraph(f"{title}{info}", styles['Small']),
+            Paragraph(f"{theyShoot}", styles['RightAligned']),
+            Paragraph(f"{rating}", styles['RightAligned']),
+            Paragraph(f"{location}", styles['RightAligned']) 
+        ]
+
     formatted_rows.append(formatted_row)
 
 pdf_filename = os.path.join(os.path.expanduser('~/Downloads'), 'movie_report.pdf')
@@ -121,7 +138,12 @@ doc = SimpleDocTemplate(
 
 # Create the table
 table_width = doc.width - doc.leftMargin - doc.rightMargin
-column_widths = [table_width * 0.9, table_width * 0.1]
+column_widths = [
+    table_width * 0.7, 
+    table_width * 0.1,
+    table_width * 0.1,
+    table_width * 0.1
+]
 
 # Create the table
 table = Table(formatted_rows, colWidths=column_widths)  # Specify the column width to match the table width
