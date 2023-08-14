@@ -7,7 +7,7 @@ from reportlab.platypus import TableStyle
 from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER, TA_RIGHT
 from databaseUtils import connect
 from criterionReportQuery import getQuery
-from enum import Enum
+from enum import Enum, auto
 
 conn = connect()
 cursor = conn.cursor()
@@ -52,17 +52,17 @@ styles.add(right_aligned_style)
 
 class Cols(Enum):
     TITLE = 0
-    DIRECTOR = 1
-    YEAR = 2
-    RUNTIME = 3
-    METACRITIC = 4
-    IMDB = 5
-    SPINE = 6
-    FORMAT = 7
-    SHELF = 8
-    TSPDT = 9
-    TOP100 = 10
-    CHECKED = 11
+    DIRECTOR = auto()
+    YEAR = auto()
+    RUNTIME = auto()
+    METACRITIC = auto()
+    IMDB = auto()
+    SPINE = auto()
+    FORMAT = auto()
+    SHELF = auto()
+    TSPDT = auto()
+    TOP100 = auto()
+    CHECKED = auto()
 
 # Create a list of formatted cells
 formatted_rows = []
@@ -125,15 +125,15 @@ for row in data:
 
     formatted_rows.append(formatted_row)
 
-pdf_filename = os.path.join(os.path.expanduser('~/Downloads'), 'movie_report.pdf')
+pdf_filename = os.path.join(os.path.expanduser('~/Downloads'), 'criterion_report.pdf')
 
 doc = SimpleDocTemplate(
     pdf_filename,
     pagesize=letter,
     topMargin=25,
     bottomMargin=25,
-    leftMargin=25,
-    rightMargin=25
+    leftMargin=40,
+    rightMargin=10
 )
 
 # Create the table
