@@ -1,7 +1,7 @@
 import json
 from urllib.parse import urlparse
-from omdbApiUtils import getMoviData
-from databaseUtils import connect
+from utilsOmdb import getMoviData
+from utilsDatabase import connect
 
 # Connect to the database
 connection = connect()

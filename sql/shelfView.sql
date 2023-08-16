@@ -1,17 +1,17 @@
-DROP VIEW shelf_view;
+DROP VIEW location_view;
 
-CREATE VIEW shelf_view AS
+CREATE VIEW location_view AS
 SELECT
     title
 	,director
 	,year
 	,runtime
 	,tspdt
-	,criterionSpine
-	,shelf
+	,criterionId
+	,location
 	,checkedLee
 FROM Movies 
-WHERE shelf IS NOT NULL
+WHERE location IS NOT NULL
 ORDER BY 
   CASE 
     WHEN title LIKE 'A %' THEN SUBSTR(title, 3)

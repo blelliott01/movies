@@ -1,8 +1,7 @@
 import os
 import requests
 from urllib.parse import urlparse
-from omdbApiUtils import getMoviData
-from databaseUtils import connect
+from utilsDatabase import connect
 
 # Connect to the database
 connection = connect()
@@ -11,7 +10,7 @@ cursor = connection.cursor()
 cursor.execute("""
     SELECT imdbUrl, json_extract(omdbData, '$.Poster')
     FROM movies
-    WHERE (rankTheyShoot IS NOT NULL OR owned IS NOT NULL)
+    WHERE (tspdt IS NOT NULL OR owned IS NOT NULL)
     AND omdbData IS NOT NULL
 """)
 rows = cursor.fetchall()

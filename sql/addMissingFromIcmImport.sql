@@ -16,6 +16,6 @@ SELECT
 	,CASE WHEN watchlist = 'no' THEN NULL ELSE 'yes' END AS checkedErica
 	,url
 	,imdburl
-FROM _icm_criterion_blueray WHERE url NOT IN (SELECT url FROM movies);
+FROM _icm_criterion_bluray WHERE url NOT IN (SELECT url FROM movies);
 
 COMMIT;
