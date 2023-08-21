@@ -1,31 +1,39 @@
 {
-    "Title": "The Act of Seeing with One's Own Eyes",
-    "Year": "1971",
-    "Rated": "Not Rated",
-    "Released": "N/A",
-    "Runtime": "32 min",
-    "Genre": "Documentary, Short, Horror",
-    "Director": "Stan Brakhage",
-    "Writer": "N/A",
-    "Actors": "N/A",
-    "Plot": "At a morgue, forensic pathologists conduct autopsies of the corpses assigned.",
-    "Language": "English",
-    "Country": "United States",
-    "Awards": "N/A",
-    "Poster": "https://m.media-amazon.com/images/M/MV5BMTVhMjYxZTgtMjNlMC00ZmY0LThkYzMtMWM0ZTQxZGI3ZDdhXkEyXkFqcGdeQXVyMjYxMzY2NDk@._V1_SX300.jpg",
+    "Title": "The Green Knight",
+    "Year": "2021",
+    "Rated": "R",
+    "Released": "30 Jul 2021",
+    "Runtime": "130 min",
+    "Genre": "Adventure, Drama, Fantasy",
+    "Director": "David Lowery",
+    "Writer": "David Lowery, The Gawain Poet",
+    "Actors": "Dev Patel, Alicia Vikander, Joel Edgerton",
+    "Plot": "A fantasy retelling of the medieval story of Sir Gawain and the Green Knight.",
+    "Language": "Latin, English",
+    "Country": "United States, Canada, Ireland",
+    "Awards": "22 wins & 116 nominations",
+    "Poster": "https://m.media-amazon.com/images/M/MV5BMjMxNTdiNWMtOWY0My00MjM4LTkwNzMtOGI0YThhN2Q4M2I4XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_SX300.jpg",
     "Ratings": [
         {
             "Source": "Internet Movie Database",
-            "Value": "6.9/10"
+            "Value": "6.6/10"
+        },
+        {
+            "Source": "Rotten Tomatoes",
+            "Value": "89%"
+        },
+        {
+            "Source": "Metacritic",
+            "Value": "85/100"
         }
     ],
-    "Metascore": "N/A",
-    "imdbRating": "6.9",
-    "imdbVotes": "1,615",
-    "imdbID": "tt0140788",
+    "Metascore": "85",
+    "imdbRating": "6.6",
+    "imdbVotes": "109,369",
+    "imdbID": "tt9243804",
     "Type": "movie",
-    "DVD": "N/A",
-    "BoxOffice": "N/A",
+    "DVD": "19 Aug 2021",
+    "BoxOffice": "$17,173,321",
     "Production": "N/A",
     "Website": "N/A",
     "Response": "True"

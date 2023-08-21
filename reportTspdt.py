@@ -1,11 +1,7 @@
 from operator import itemgetter
 import os
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Table, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.lib import colors
-from reportlab.platypus import PageBreak, TableStyle
-from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT, TA_CENTER, TA_RIGHT
+from reportlab.platypus import Table, Paragraph, Spacer
+from reportlab.platypus import PageBreak
 from enum import Enum, auto
 from utilsDatabase import getMovieData
 from utilsReport import getReportStyles, getSimpleDocTamplate
@@ -13,94 +9,60 @@ from utilsReport import getReportStyles, getSimpleDocTamplate
 class Cols(Enum):
     TSPDT = 0
     TITLE = auto()
-    DIRECTOR = auto()
-    YEAR = auto()
-    RUNTIME = auto()
-    OWNED = auto()
-    FORMAT = auto()
+    INFO = auto()
     SPINE = auto()
-    SHELF = auto()
+    LOCATION = auto()
+    CRITERIONFORMAT = auto()
     CHECKED = auto()
 
-data = getMovieData("SELECT * FROM tspdt_view")
-styles = getReportStyles()
+def generate_report(sql_query, reportTitle, pdf_filename):
+    data = getMovieData(sql_query)
+    styles = getReportStyles()
 
-# Create a list of formatted cells
-not_seen_rows = []
-all_rows = []
-for row in data:
-    if row[Cols.YEAR.value] is not None:
-        year = f"{row[Cols.YEAR.value]}"
-    else:
-        year = 'n/a'
+    # Create a list of formatted cells
+    all_rows = []
+    all_rows.append(["", Paragraph(f"<b>{reportTitle}</b>", styles['TopTitle']), ""])
+    
+    for row in data:
+        title = f"{row[Cols.TITLE.value]}\n<i>{row[Cols.INFO.value]}</i>\n"
 
-    if row[Cols.DIRECTOR.value] is not None:
-        director = f"{row[Cols.DIRECTOR.value].split(',')[0].strip()}"
-    else:
-        director = 'n/a'
+        if row[Cols.LOCATION.value] is not None:
+            location = f"{row[Cols.SPINE.value]} {row[Cols.LOCATION.value]}"
+        elif row[Cols.CRITERIONFORMAT.value] is not None:
+            location =  row[Cols.CRITERIONFORMAT.value]
+        else:
+            location = ''
 
-    if row[Cols.RUNTIME.value] is not None:
-        time = f"{row[Cols.RUNTIME.value]} min"
-    else:
-        time = 'n/a'
+        formatted_row = [
+            Paragraph(f"{row[Cols.TSPDT.value]}", styles['RightAligned']),
+            Paragraph(f"{title}", styles['Small']),
+            Paragraph(f"{location}", styles['RightAligned'])
+        ]
 
-    title = f"{row[Cols.TITLE.value]}\n<i>({year}, {director}, {time})</i>\n"
+        all_rows.append(formatted_row)
 
-    if row[Cols.TSPDT.value] is not None:
-        theyShoot = f"{row[Cols.TSPDT.value]}"
-    else:
-        theyShoot = ''
+    pdf_filename = os.path.join(os.path.expanduser(
+        '~/Downloads'), pdf_filename)
 
-    if row[Cols.SPINE.value] is not None and row[Cols.SHELF.value] is not None:
-        location = f"{row[Cols.SPINE.value]} {row[Cols.SHELF.value]}"
-    elif row[Cols.SPINE.value] is not None:
-        location = f"{row[Cols.SPINE.value]}"
-    elif row[Cols.SHELF.value] is not None:
-        location = f"{row[Cols.SHELF.value]}"
-    else:
-        location = ''
+    # Create the table
+    doc = getSimpleDocTamplate(pdf_filename)
 
-    if row[Cols.CHECKED.value] is None:
-        title = f"<b>{title}</b>"
-        theyShoot = f"<b>{theyShoot}</b>"
-        location = f"<b>{location}</b>"
-
-    formatted_row = [
-        Paragraph(f"{title}", styles['Small']),
-        Paragraph(f"{theyShoot}", styles['RightAligned']),
-        Paragraph(f"{location}", styles['RightAligned']),
-        theyShoot
+    table_width = doc.width - doc.leftMargin - doc.rightMargin
+    column_widths = [
+        table_width * 0.06,
+        table_width * 0.84,
+        table_width * 0.10,
     ]
+    row_heights = [14] * (len(all_rows) - 1)
+    row_heights.insert(0, 30)
 
-    all_rows.append(formatted_row)
+    elements = []
+    elements.append(Table(all_rows, colWidths=column_widths, rowHeights=row_heights))
+    doc.build(elements)
 
-    if row[Cols.CHECKED.value] is None and row[Cols.TSPDT.value] <= 250:
-        not_seen_rows.append(formatted_row)
-
-pdf_filename = os.path.join(os.path.expanduser(
-    '~/Downloads'), 'tspdt_report.pdf')
-
-# Create the table
-doc = getSimpleDocTamplate(pdf_filename)
-
-table_width = doc.width - doc.leftMargin - doc.rightMargin
-column_widths = [
-    table_width * 0.86,
-    table_width * 0.07,
-    table_width * 0.07
-]
-
-not_seen_rows = [row[:3] for row in not_seen_rows]
-tableNotSeen = Table(not_seen_rows, colWidths=column_widths)
-
-all_rows = [row[:3] for row in all_rows]
-tableAll = Table(all_rows, colWidths=column_widths)
-
-elements = []
-elements.append(tableNotSeen)
-elements.append(PageBreak())
-elements.append(tableAll)
-
-doc.build(elements)
-
-print(f"PDF report saved to {pdf_filename}")
+    print(f"PDF report saved to {pdf_filename}")
+     
+generate_report("select * from tspdt_View limit 100", "They Shoot Pictures Don't They - Not Seen", "tspdt_report.pdf")
+generate_report("select * from tspdt2k_view limit 100", "They Shoot Pictures Don't They 2K - Not Seen", "tsptd2k_report.pdf")
+generate_report("select * from tspdt_View where checkedLee is null and tspdt is not null and location is not null limit 100", 
+                "They Shoot Pictures Don't They - Owned Not Seen", "towatch_report.pdf")

@@ -17,6 +17,13 @@ def getReportStyles():
         parent=styles['Small'], 
         alignment=TA_RIGHT)
     )
+    styles.add(ParagraphStyle(
+        'TopTitle', 
+        parent=styles['Title'], 
+        alignment=TA_LEFT,
+        horizontalAlignment='TOP',
+        fontSize=12)
+    )    
     return styles
 
 def getSimpleDocTamplate(pdf_filename):
